@@ -24,7 +24,10 @@ if (isDev) {
 }
 const logger = winston.createLogger({
   level: isDev ? 'silly' : 'http',
-  transports: [new winston.transports.Console()],
+  transports: [
+      new winston.transports.Console(),
+      new (winston.transports.File)({ filename: 'access.log' })
+  ],
   format: winston.format.combine(...loggerFormats)
 });
 

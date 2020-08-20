@@ -60,3 +60,7 @@ typings/
 private/
 my_config.js
 my_config.json
+
+# dev
+.idea
+.idea/*

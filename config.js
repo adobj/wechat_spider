@@ -1,13 +1,15 @@
 'use strict';
 
 const merge = require('./utils/merge');
+const logger = require('./utils/logger');
+
 const env = process.env.NODE_ENV || 'development';
 
 const isDev = env === 'development';
 const isProd = env === 'production';
+logger.info('Current environment '+ env + ', Is it a development environment : '+ isDev);
 
 const config = {
-
   // 环境相关
   env,
   isDev,
@@ -40,7 +42,7 @@ const config = {
 
   // mongo 数据库设置
   mongodb: {
-    db: 'mongodb://127.0.0.1:27017/wechat_spider'
+    db: 'mongodb://192.168.1.43:27017/wechat_spider'
   },
 
   // redis 设置
@@ -62,14 +64,14 @@ const config = {
       // 跳转指文章页跳至下一个文章页，不能文章页和公众号历史页互相跳转
       disable: false,
       // 跳转时间间隔，单位秒
-      jumpInterval: 2,
+      jumpInterval: 15,
 
       // 跳转文章发布时间范围
       minTime: new Date('2020/1/1'),
       maxTime: new Date('2021/1/1'),
 
       // 已经抓取过的文章是否需要再次抓取
-      isCrawlExist: true,
+      isCrawlExist: false,
       // 如果上面设置为 true，此项可控制再次重复抓取文章的时间间隔
       // updateNumAt - publishAt < crawlExistInterval => 抓取
       // 默认 3 天，数据已趋于稳定
@@ -83,7 +85,7 @@ const config = {
       // 内容占用很多空间，尤其是html形式
       isSavePostContent: isDev ? true : false,
       // 保存内容的形式: html/text
-      saveContentType: 'text',
+      saveContentType: 'html',
     },
 
     // 公众号查看全部历史文章页面相关设置
@@ -92,7 +94,7 @@ const config = {
       // 跳转不能文章页和公众号历史页互相跳转
       disable: false,
       // 跳转时间间隔，单位秒
-      jumpInterval: 8,
+      jumpInterval: 30,
 
       // 页面会自动下拉
       // 下拉至此项设置的时间便会停止
@@ -108,7 +110,7 @@ const config = {
     },
 
     // 功能：是否抓取评论
-    isCrawlComments: true,
+    isCrawlComments: false,
 
     // 优化项：是否替换掉所有的图片请求
     isReplaceImg: isDev ? false : true,
