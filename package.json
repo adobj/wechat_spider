@@ -31,7 +31,9 @@
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.14.3",
     "mocha": "^5.2.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "cron": "^1.7.2",
+    "wd": "^1.13.0"
   },
   "repository": {
     "type": "git",

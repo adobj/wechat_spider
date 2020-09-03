@@ -64,11 +64,11 @@ const config = {
       // 跳转指文章页跳至下一个文章页，不能文章页和公众号历史页互相跳转
       disable: false,
       // 跳转时间间隔，单位秒
-      jumpInterval: 15,
+      jumpInterval: 120,
 
       // 跳转文章发布时间范围
-      minTime: new Date('2020/1/1'),
-      maxTime: new Date('2021/1/1'),
+      minTime: new Date(new Date().setMonth(new Date().getMonth()-1)),
+      maxTime: new Date(new Date().setMonth(new Date().getMonth()+1)),
 
       // 已经抓取过的文章是否需要再次抓取
       isCrawlExist: false,
@@ -83,7 +83,7 @@ const config = {
 
       // 是否保存微信文章内容
       // 内容占用很多空间，尤其是html形式
-      isSavePostContent: isDev ? true : false,
+      isSavePostContent: true,
       // 保存内容的形式: html/text
       saveContentType: 'html',
     },
@@ -94,15 +94,15 @@ const config = {
       // 跳转不能文章页和公众号历史页互相跳转
       disable: false,
       // 跳转时间间隔，单位秒
-      jumpInterval: 30,
+      jumpInterval: 300,
 
       // 页面会自动下拉
       // 下拉至此项设置的时间便会停止
       // 然后跳转至下一个公众号历史页面
-      minTime: new Date('2020/1/1'),
+      minTime: new Date(new Date().setMonth(new Date().getMonth()-1)),
 
       // 控制在此时间后已经抓取过的公众号本次就不用再抓取了
-      maxUpdatedAt: new Date('2021/1/1'),
+      maxUpdatedAt: new Date(new Date().setMonth(new Date().getMonth()+1)),
 
       // 抓取公众号 biz 范围 [string]
       // 为空表示不限制范围
@@ -127,7 +127,7 @@ const config = {
   },
 
 };
-
+logger.info('config -------->'+ JSON.stringify(config));
 // docker 配置
 if (process.env.DEPLOY === 'docker') {
   config.mongodb.db = 'mongodb://mongo:27017/wechat_spider';

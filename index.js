@@ -6,6 +6,7 @@ const ip = require('ip');
 const config = require('./config');
 const utils = require('./utils');
 const logger = require('./utils/logger');
+const wechat = require('./appium/wechat');
 
 const {
   anyproxy: anyproxyConfig,
@@ -53,6 +54,7 @@ utils.delCrawlLinkCache().then(() => {
   logger.error(e);
 });
 
+wechat.wechatStart();
 // when finished
 // proxyServer.close();
 
