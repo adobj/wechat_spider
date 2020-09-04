@@ -97,6 +97,7 @@ api.get('/posts', wrap(async (req, res) => {
       msgIdx: i.msgIdx || '',
       readNum: i.readNum || 0,
       likeNum: i.likeNum || 0,
+      likeNum2: i.likeNum2 || 0,
       updateNumAt: i.updateNumAt || null,
       profile,
     };
@@ -115,7 +116,7 @@ api.get('/posts/:id', wrap(async (req, res) => {
 // TODO: 权限, validate
 api.put('/posts/:id', wrap(async (req, res) => {
   const { id } = req.params;
-  const fields = ['title', 'link', 'publishAt', 'readNum', 'likeNum', 'msgBiz', 'msgMid', 'msgIdx', 'sourceUrl', 'cover', 'digest', 'isFail', 'wechatId', 'updateNumAt', 'content'];
+  const fields = ['title', 'link', 'publishAt', 'readNum', 'likeNum', 'likeNum2', 'msgBiz', 'msgMid', 'msgIdx', 'sourceUrl', 'cover', 'digest', 'isFail', 'wechatId', 'updateNumAt', 'content'];
   const doc = utils.extract(req.body, fields);
   await models.Post.findByIdAndUpdate(id, doc);
   res.json({ state: 1, message: '更新文章成功' });
@@ -162,8 +163,8 @@ api.get('/profiles', wrap(async (req, res) => {
   for (const item of data) {
     let postsAllCount = 0, postsHasDataCount = 0, newestPostTime = null, oldestPostTime = null;
     if (item.msgBiz) {
-      postsAllCount = await models.Post.count({ msgBiz: item.msgBiz });
-      postsHasDataCount = await models.Post.count({ msgBiz: item.msgBiz, readNum: { $exists: true } });
+      postsAllCount = await models.Post.countDocuments({ msgBiz: item.msgBiz });
+      postsHasDataCount = await models.Post.countDocuments({ msgBiz: item.msgBiz, readNum: { $exists: true } });
       newestPostTime = ((await models.Post.find({ msgBiz: item.msgBiz, publishAt: { $exists: true } }).sort({ publishAt: -1 }).limit(1))[0] || {}).publishAt || null;
       oldestPostTime = ((await models.Post.find({ msgBiz: item.msgBiz, publishAt: { $exists: true } }).sort({ publishAt: 1 }).limit(1))[0] || {}).publishAt || null;
     }

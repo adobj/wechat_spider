@@ -64,3 +64,5 @@ my_config.json
 # dev
 .idea
 .idea/*
+
+.DS_Store
