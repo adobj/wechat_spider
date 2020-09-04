@@ -31,6 +31,7 @@ if (!AnyProxy.utils.certMgr.ifRootCAFileExists()) {
   });
 }
 
+const ipAddress = ip.address();
 const proxyServer = new AnyProxy.ProxyServer({
   ...anyproxyConfig,
 
@@ -39,8 +40,7 @@ const proxyServer = new AnyProxy.ProxyServer({
 });
 
 proxyServer.on('ready', () => {
-  const ipAddress = ip.address();
-  logger.info('请配置代理: %s:8101', ipAddress);
+  logger.info('请配置HTTP代理: %s:8101', ipAddress);
 });
 
 proxyServer.on('error', (e) => {
@@ -59,5 +59,5 @@ wechat.wechatStart();
 // proxyServer.close();
 
 require('./server').listen(serverPort, () => {
-  logger.info('可视化界面: http://localhost:8104');
+  logger.info('数据管理页面: http://%s:8104', ipAddress);
 });
