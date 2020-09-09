@@ -40,8 +40,7 @@ module.exports = {
       { "SwitchCase": 1 }
     ],
     "linebreak-style": [
-      2,
-      "unix"
+        0,"error", "windows"
     ],
     "quotes": [
       1,

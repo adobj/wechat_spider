@@ -8,7 +8,7 @@ const logger = require('../utils/logger');
 const { isPostPage } = require('./postLink');
 const handleImg = require('./handleImg');
 const getNextProfileLink = require('./getNextProfileLink');
-
+const wechat = require('../appium/wechat');
 const {
   getProfileBasicInfo,
   getPostList,
@@ -68,7 +68,10 @@ const rule = {
       if (!config.rule.profile.disable) {
         nextLink = yield getNextProfileLink();
       }
-      if (!nextLink) nextLink = '';
+      if (!nextLink){
+        nextLink = '';
+        wechat.jumpToPosts();
+      }
 
       logger.info('下一个历史消息跳转链接: %s', nextLink);
 
@@ -105,6 +108,7 @@ const rule = {
       }
 
       if (isPostPage(link)) {
+        logger.info("postPage 捕获成功" + link);
         yield getPostBasicInfo(ctx);
         return yield handlePostHtml(ctx);
       }
