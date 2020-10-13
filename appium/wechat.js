@@ -6,7 +6,7 @@ const cronJob = require("cron").CronJob;
 function wechatStart() {
   new cronJob('0 0 8 * * *', function () { //0 0 8 * * *
     remote();
-    logger.info('每日启动微信成功' + new Date().toLocaleString());
+    logger.info('每日启动微信定时任务启动' + new Date().toLocaleString());
   }, null, true);
 }
 async function jumpToPosts(){
@@ -71,6 +71,7 @@ async function remote(){
   // 填写账号
   //let phone = await driver.elementById("video.like:id/et_phone");
   //await phone.sendKeys("137XXXXXXX");
+  logger.info('每日启动微信成功' + new Date().toLocaleString());
 }
 function sleep(numbermsec){
   let now = new Date().getTime();
