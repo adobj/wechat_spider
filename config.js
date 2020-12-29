@@ -115,9 +115,9 @@ const config = {
     isCrawlComments: false,
 
     // 优化项：是否替换掉所有的图片请求
-    isReplaceImg: isDev ? false : true,
+    isReplaceImg: true,
     // 优化项：是否替换手机上显示的正文内容
-    isReplacePostBody: isDev ? false : true,
+    isReplacePostBody: true,
   },
 
   // 添加代理基本认证

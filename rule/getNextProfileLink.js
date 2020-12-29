@@ -29,6 +29,7 @@ async function normalMode() {
   maxUpdatedAt.setHours(0);
   maxUpdatedAt.setMinutes(0);
   maxUpdatedAt.setSeconds(0);
+  maxUpdatedAt = new Date(maxUpdatedAt.getTime() - 8 * 60 * 60 * 1000);//解决mongodb时区问题
   logger.info('maxUpdatedAt init -------->'+ JSON.stringify(maxUpdatedAt));
   const searchQuery = {
     msgBiz: { $exists: true },
