@@ -64,6 +64,7 @@ Post.index({ updateNumAt: -1 });
 Post.index({ msgBiz: 1, publishAt: 1, msgIdx: 1 });
 Post.index({ msgBiz: 1, msgMid: 1, msgIdx: 1 }, { unique: true, sparse: true });
 Post.index({ link: 1 });
+Post.index({ createdAt: 1 });
 
 // 插入或更新数据
 // 必须包含 msgBiz, msgMid, msgIdx

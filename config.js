@@ -9,6 +9,8 @@ const isDev = env === 'development';
 const isProd = env === 'production';
 logger.info('Current environment '+ env + ', Is it a development environment : '+ isDev);
 
+let initDate = null;
+
 const config = {
   // 环境相关
   env,
@@ -68,8 +70,8 @@ const config = {
       jumpInterval: 120,
 
       // 跳转文章发布时间范围
-      minTime: new Date(new Date().setMonth(new Date().getMonth()-1)),
-      maxTime: new Date(new Date().setMonth(new Date().getMonth()+1)),
+      minTime: new Date(getInitDateTime()).setMonth(getInitDateTime().getMonth()-3),
+      maxTime: new Date(getInitDateTime()).setMonth(getInitDateTime().getMonth()+1),
 
       // 已经抓取过的文章是否需要再次抓取
       isCrawlExist: false,
@@ -100,10 +102,10 @@ const config = {
       // 页面会自动下拉
       // 下拉至此项设置的时间便会停止
       // 然后跳转至下一个公众号历史页面
-      minTime: new Date(new Date().setMonth(new Date().getMonth()-1)),
+      minTime: new Date(getInitDateTime()).setMonth(getInitDateTime().getMonth()-1),
 
       // 控制在此时间后已经抓取过的公众号本次就不用再抓取了
-      maxUpdatedAt: new Date(new Date().setMonth(new Date().getMonth()+1)),
+      maxUpdatedAt: getInitDateTime(),
 
       // 抓取公众号 biz 范围 [string]
       // 为空表示不限制范围
@@ -114,9 +116,9 @@ const config = {
     isCrawlComments: false,
 
     // 优化项：是否替换掉所有的图片请求
-    isReplaceImg: isDev ? false : true,
+    isReplaceImg: true,
     // 优化项：是否替换手机上显示的正文内容
-    isReplacePostBody: isDev ? false : true,
+    isReplacePostBody: true,
   },
 
   // 添加代理基本认证
@@ -135,6 +137,14 @@ if (process.env.DEPLOY === 'docker') {
   config.redis.host = 'redis';
 }
 
+//时间处理
+function getInitDateTime(){
+  if(initDate == null || initDate == ""){
+    initDate = new Date();
+  }
+  logger.info('initDate -------->'+ JSON.stringify(initDate));
+  return initDate;
+}
 
 // 加载自定义的配置
 try {

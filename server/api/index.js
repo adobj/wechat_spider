@@ -116,7 +116,7 @@ api.get('/posts/:id', wrap(async (req, res) => {
 // TODO: 权限, validate
 api.put('/posts/:id', wrap(async (req, res) => {
   const { id } = req.params;
-  const fields = ['title', 'link', 'publishAt', 'readNum', 'likeNum', 'likeNum2', 'msgBiz', 'msgMid', 'msgIdx', 'sourceUrl', 'cover', 'digest', 'isFail', 'wechatId', 'updateNumAt', 'content'];
+  const fields = ['title', 'link', 'publishAt', 'readNum', 'likeNum', 'likeNum2', 'msgBiz', 'msgMid', 'msgIdx', 'sourceUrl', 'cover', 'digest', 'isFail', 'wechatId', 'updateNumAt', 'content', 'html'];
   const doc = utils.extract(req.body, fields);
   await models.Post.findByIdAndUpdate(id, doc);
   res.json({ state: 1, message: '更新文章成功' });

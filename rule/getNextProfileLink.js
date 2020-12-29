@@ -6,24 +6,31 @@ const moment = require('moment');
 const redis = require('../utils/redis');
 const config = require('../config');
 const models = require('../models');
-
+const logger = require('../utils/logger');
 // 配置抓取方式
 const RULE_FN = normalMode;
 const CACHE_LIMIT = 100;
 
-const {
+var {
   rule: ruleConfig,
   redis: redisConfig,
 } = config;
-const { profile: profileConfig } = ruleConfig;
+var { profile: profileConfig } = ruleConfig;
 const { PROFILE_LIST_KEY } = redisConfig;
 
 
 // 正常模式
 async function normalMode() {
   // 没有拿到链接则从数据库中查
-  const { maxUpdatedAt, targetBiz } = profileConfig;
-
+  let { maxUpdatedAt, targetBiz } = profileConfig;
+  logger.info('maxUpdatedAt init before -------->'+ JSON.stringify(maxUpdatedAt));
+  // 如果需要使用配置时间，注释此处代码
+  maxUpdatedAt = new Date();
+  maxUpdatedAt.setHours(0);
+  maxUpdatedAt.setMinutes(0);
+  maxUpdatedAt.setSeconds(0);
+  maxUpdatedAt = new Date(maxUpdatedAt.getTime() - 8 * 60 * 60 * 1000);//解决mongodb时区问题
+  logger.info('maxUpdatedAt init -------->'+ JSON.stringify(maxUpdatedAt));
   const searchQuery = {
     msgBiz: { $exists: true },
     $or: [
