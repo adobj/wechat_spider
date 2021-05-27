@@ -13,7 +13,8 @@ const wechat = require('../appium/wechat');
 const {
   getProfileBasicInfo,
   getPostList,
-  handleProfileHtml
+  handleProfileHtml,
+  handleMediaHtml
 } = require('./handleProfileHistoryPage');
 const {
   getReadAndLikeNum,
@@ -130,6 +131,18 @@ const rule = {
         yield getPostList(ctx);
         return;
       }
+
+      if (/view.inews.qq.com\/w\/|weishi\.qq\.com\/(weishi\/feed|ws\/ugg\/feeds_swipe\/)/.test(link)) {
+        // console.log(res.response.body.toString());
+        logger.info('成功捕获 news.qq.com 。。。。。。。。。。。。。。。。。。。。。');
+        return yield handleMediaHtml(ctx);
+      }
+      // if (/\.inews\.qq\.com\/w\//.test(link)) {
+      //   return yield handleMediaHtml(ctx);
+      // }
+      // if (/weishi\.qq\.com\/(weishi\/feed|ws\/ugg\/feeds_swipe\/)/.test(link)) {
+      //   return yield handleMediaHtml(ctx);
+      // }
     } catch (e) {
       logger.error(e);
     }
@@ -142,6 +155,9 @@ const rule = {
 
     const whitelist = [
       'mp.weixin.qq.com:443',
+      'isee.weishi.qq.com:443',
+      'h5.weishi.qq.com:443',
+      'view.inews.qq.com:443',
     ];
 
     const dealHttps = whitelist.includes(host);

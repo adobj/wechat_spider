@@ -4,7 +4,7 @@ const androidOptions = require('./caps').androidOptions;
 const cronJob = require("cron").CronJob;
 
 function wechatStart() {
-  new cronJob('0 0 8 * * *', function () { //0 0 8 * * *
+  new cronJob('0 05 18 * * *', function () { //0 0 8 * * *
     remote();
     logger.info('每日启动微信定时任务启动' + new Date().toLocaleString());
   }, null, true);
@@ -14,8 +14,8 @@ async function jumpToPosts(){
   let driver = await wd.promiseChainRemote(androidOptions.serverConfig);
   let desiredCaps = androidOptions.capabilities;
   await driver.init(desiredCaps);
-  await driver.setImplicitWaitTimeout(6000);
-  await sleep(20000);
+  await driver.setImplicitWaitTimeout(10000);
+  await sleep(80000);
   // 点击
   let avatar = await driver.element("xpath",".//android.widget.RelativeLayout[2]");//com.tencent.mm:id/d3r
   await avatar.click();
@@ -48,26 +48,27 @@ async function remote(){
   let driver = await wd.promiseChainRemote(androidOptions.serverConfig);
   let desiredCaps = androidOptions.capabilities;
   await driver.init(desiredCaps);
-  await driver.setImplicitWaitTimeout(6000);
-  await sleep(20000);
+  await driver.setImplicitWaitTimeout(10000);
+  await sleep(80000);
   // 点击
-  let avatar = await driver.element("xpath",".//android.widget.RelativeLayout[2]");//com.tencent.mm:id/d3r
+  let avatar = await driver.element("xpath",".//*[@class='android.view.View' and @text='腾讯新闻']");//com.tencent.mm:id/d3r
   await avatar.click();
   console.log("单击avatar "+avatar);
-  let subscription = await driver.elementById("com.tencent.mm:id/a50");
+  await sleep(10000);//
+  let subscription = await driver.element("xpath",".//android.widget.ImageView[contains(@resource-id,'com.tencent.mm:id/bhd')]");
   await subscription.click();
   console.log("单击subscriptiont "+subscription);
-  let firstChildSub = await driver.elementById("com.tencent.mm:id/a8s");
-  await firstChildSub.click();
-  console.log("单击firstChildSub "+firstChildSub);
-  await sleep(20000);
-  let subMenu = await driver.elementById("com.tencent.mm:id/jr");
-  await subMenu.click();
-  console.log("单击subMenu "+subMenu);
-  await sleep(20000);
-  let allArticles = await driver.elementById("com.tencent.mm:id/azu");
-  await allArticles.click();
-  console.log("单击allArticles "+allArticles);
+  // let firstChildSub = await driver.elementById("com.tencent.mm:id/a8s");
+  // await firstChildSub.click();
+  // console.log("单击firstChildSub "+firstChildSub);
+  // await sleep(20000);
+  // let subMenu = await driver.elementById("com.tencent.mm:id/jr");
+  // await subMenu.click();
+  // console.log("单击subMenu "+subMenu);
+  // await sleep(20000);
+  // let allArticles = await driver.elementById("com.tencent.mm:id/azu");
+  // await allArticles.click();
+  // console.log("单击allArticles "+allArticles);
   // 填写账号
   //let phone = await driver.elementById("video.like:id/et_phone");
   //await phone.sendKeys("137XXXXXXX");

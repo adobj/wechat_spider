@@ -92,6 +92,40 @@ const getPostList = async function (ctx) {
   await savePostsData(postList);
 };
 
+const handleMediaHtml = async function (ctx) {
+  const { req, res } = ctx;
+  const link = req.url;
+  let { minTime, jumpInterval } = profileConfig;
+  let body = res.response.body.toString();
+
+  const warnHandler = async () => {
+    const nextLink = await getNextProfileLink.customLink();
+    const insertScript = '<meta http-equiv="refresh" content="8;url=' + nextLink + '" />';
+    //const insertScript = '<meta http-equiv="refresh" content="' + jumpInterval + ';url=' + nextLink + '" />';
+    body = body.replace('</title>', '</title>' + insertScript);
+    logger.warn('body 所属链接 link 替换成功 %s', link);
+    logger.warn('body 原始值 %s', res.response);
+    logger.warn('body 替换成功 %s', body);
+    return { response: { ...res.response, body } };
+  };
+  // js处理
+  if (link.endsWith('.js') || link.endsWith('.css')) {
+    return { response: { ...res.response, body } };
+  }
+  if (res.response.statusCode == 304) {
+    const nextLink = await getNextProfileLink.customLink();
+    res.response.statusCode = 200;
+    body = '<!DOCTYPE html><html lang="en">\n' +
+      '<head><meta charset="utf-8">\n' +
+      '<title>微视热门视频</title>\n' +
+      '<meta http-equiv="refresh" content="3;url=' + nextLink + '" />\n' +
+      '</head>\n' +
+      '<body><div id="app"></div></body></html>'
+    return { response: { ...res.response, body } };
+  }
+  return warnHandler();
+}
+
 // 注入控制代码至手机前端，实现功能：
 //   自动下拉页面至目标发布日期
 //   自动跳转至下一公众号历史页面
@@ -163,4 +197,5 @@ module.exports = {
   getProfileBasicInfo,
   getPostList,
   handleProfileHtml,
+  handleMediaHtml,
 };

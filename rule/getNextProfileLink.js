@@ -107,7 +107,12 @@ exports = module.exports = getNextProfileLink;
 exports.must = async function () {
   const link = await getNextProfileLink();
   if (link) return link;
-  return bizToLink('MjM5ODIyMTE0MA==');
+  return bizToLink('MzA5ODA2OTAxNg==');
+};
+
+// 生成一个默认列表页链接,供首次自动跳转使用
+exports.customLink = async function () {
+  return bizToLink('MzA5ODA2OTAxNg==');
 };
 
 function bizToLink(biz) {
