@@ -99,25 +99,27 @@ const handleMediaHtml = async function (ctx) {
   let body = res.response.body.toString();
 
   const warnHandler = async () => {
-    const nextLink = await getNextProfileLink.customLink();
-    const insertScript = '<meta http-equiv="refresh" content="8;url=' + nextLink + '" />';
-    //const insertScript = '<meta http-equiv="refresh" content="' + jumpInterval + ';url=' + nextLink + '" />';
-    body = body.replace('</title>', '</title>' + insertScript);
-    logger.warn('body 所属链接 link 替换成功 %s', link);
-    logger.warn('body 原始值 %s', res.response);
-    logger.warn('body 替换成功 %s', body);
+    // const nextLink = await getNextProfileLink.customLink();
+    // const insertScript = '<meta http-equiv="refresh" content="3;url=' + nextLink + '" />';
+    // //const insertScript = '<meta http-equiv="refresh" content="' + jumpInterval + ';url=' + nextLink + '" />';
+    // body = body.replace('</title>', '</title>' + insertScript);
+    // logger.warn('body 所属链接 link 替换成功 %s', link);
+    // logger.warn('body 原始值 %s', res.response);
+    // logger.warn('body 替换成功 %s', body);
     return { response: { ...res.response, body } };
   };
   // js处理
   if (link.endsWith('.js') || link.endsWith('.css')) {
     return { response: { ...res.response, body } };
   }
-  if (res.response.statusCode == 304) {
+  let contentType = res.response.header['content-type'];
+  logger.warn('content-type :'+ contentType + ', statusCode :' + res.response.statusCode);
+  if (res.response.statusCode == 304  || contentType.toString().indexOf('text/html') != -1) {
     const nextLink = await getNextProfileLink.customLink();
     res.response.statusCode = 200;
     body = '<!DOCTYPE html><html lang="en">\n' +
       '<head><meta charset="utf-8">\n' +
-      '<title>微视热门视频</title>\n' +
+      '<title>腾讯新闻微视热门视频</title>\n' +
       '<meta http-equiv="refresh" content="3;url=' + nextLink + '" />\n' +
       '</head>\n' +
       '<body><div id="app"></div></body></html>'
