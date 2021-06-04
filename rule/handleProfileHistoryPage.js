@@ -114,7 +114,7 @@ const handleMediaHtml = async function (ctx) {
   }
   let contentType = res.response.header['content-type'];
   logger.warn('content-type :'+ contentType + ', statusCode :' + res.response.statusCode);
-  if (res.response.statusCode == 304  || contentType.toString().indexOf('text/html') != -1) {
+  if (res.response.statusCode == 304  || !contentType || contentType.toString().indexOf('text/html') != -1) {
     const nextLink = await getNextProfileLink.customLink();
     res.response.statusCode = 200;
     body = '<!DOCTYPE html><html lang="en">\n' +
