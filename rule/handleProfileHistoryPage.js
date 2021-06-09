@@ -120,7 +120,7 @@ const handleMediaHtml = async function (ctx) {
     body = '<!DOCTYPE html><html lang="en">\n' +
       '<head><meta charset="utf-8">\n' +
       '<title>腾讯新闻微视热门视频</title>\n' +
-      '<meta http-equiv="refresh" content="3;url=' + nextLink + '" />\n' +
+      '<meta http-equiv="refresh" content="8;url=' + nextLink + '" />\n' +
       '</head>\n' +
       '<body><div id="app"></div></body></html>'
     return { response: { ...res.response, body } };
