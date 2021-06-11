@@ -114,7 +114,7 @@ const handleMediaHtml = async function (ctx) {
   }
   let contentType = res.response.header['content-type'];
   logger.warn('content-type :'+ contentType + ', statusCode :' + res.response.statusCode);
-  if (!contentType || /image|json/.test(contentType.toString())) {
+  if (contentType && /image|json/.test(contentType.toString())) {
     return { response: { ...res.response, body } };
   }
   if (res.response.statusCode == 304  || !contentType || contentType.toString().indexOf('text/html') != -1) {
