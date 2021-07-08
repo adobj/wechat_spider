@@ -61,6 +61,25 @@ const handlePostHtml = async function (ctx) {
   const { response } = res;
   let body = response.body.toString();
 
+  const warnHandler = async () => {
+    const nextLink = await getNextPostLink();
+    const body = '<!DOCTYPE html><html lang="en">\n' +
+      '<head><meta charset="utf-8">\n' +
+      '<title>该内容已被发布者删除</title>\n' +
+      '<meta http-equiv="refresh" content="8;url=' + nextLink + '" /></head>\n' +
+      '<body><div class="rich_media_content " id="js_content" style="visibility: hidden;">该内容已被发布者删除</div></body></html>';
+    // 禁止缓存
+    response.header['Expires'] = 0;
+    response.header['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+    return { response: { ...res.response, body } };
+  };
+
+  // 此账号已申请账号迁移
+  if (body.includes('该内容已被发布者删除')) {
+    logger.warn('该内容已被发布者删除 %s', res.link);
+    return warnHandler();
+  }
+
   // 替换显示在手机上的正文 加速网络
   if (isReplacePostBody) {
     const info = await debugInfo();
